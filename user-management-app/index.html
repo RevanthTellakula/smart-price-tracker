@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header with Logo and Icons -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer" onclick="goToHomePage()">
+                    <div class="flex flex-col">
+                        <div class="bg-white text-black text-base font-bold border border-black px-2 py-1">LOGO</div>
+                        <div class="text-[8px] text-black mt-1 text-center leading-tight">
+                            <div>ESTD</div>
+                            <div>2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top Right Icons -->
+                <div class="flex items-center space-x-4">
+                    <!-- Headphones Icon -->
+                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                        <i class="fas fa-headphones text-lg"></i>
+                    </button>
+                    
+                    <!-- Bell Icon -->
+                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors duration-200">
+                        <i class="fas fa-bell text-lg"></i>
+                    </button>
+                    
+                    <!-- User Profile Icon -->
+                    <button class="p-2 text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-full transition-colors duration-200">
+                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-purple-600"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- Users Section -->
+        <div id="usersSection" class="bg-white rounded-lg shadow-sm p-6">
+            <!-- Users Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800">Users</h2>
+                <button id="addUserBtn" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors duration-200 flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    Add user
+                </button>
+            </div>
+
+            <!-- Users Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <!-- Table Header -->
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Sr. No</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">User name</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">E-mail</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Action</th>
+                        </tr>
+                    </thead>
+                    <!-- Table Body -->
+                    <tbody>
+                        <!-- Row 1 -->
+                        <tr class="border-b border-gray-200">
+                            <td class="px-4 py-3 text-sm text-gray-900">1</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Dave Richards</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">dave@mail.com</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">
+                                <div class="flex space-x-3">
+                                    <button class="text-gray-500 hover:text-gray-700 view-user" data-name="Dave Richards" data-email="dave@mail.com" data-contact="">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-gray-700 delete-user">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 2 -->
+                        <tr class="border-b border-gray-200">
+                            <td class="px-4 py-3 text-sm text-gray-900">2</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Abhishek Hari</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">hari@mail.com</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">
+                                <div class="flex space-x-3">
+                                    <button class="text-gray-500 hover:text-gray-700 view-user" data-name="Abhishek Hari" data-email="hari@mail.com" data-contact="">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-gray-700 delete-user">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 3 -->
+                        <tr class="border-b border-gray-200">
+                            <td class="px-4 py-3 text-sm text-gray-900">3</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Nishta Gupta</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">nishta@mail.com</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">
+                                <div class="flex space-x-3">
+                                    <button class="text-gray-500 hover:text-gray-700 view-user" data-name="Nishta Gupta" data-email="nishta@mail.com" data-contact="">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-gray-700 delete-user">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- User Profile Section (Hidden by default) -->
+        <div id="userProfileSection" class="hidden">
+            <!-- Profile Header -->
+            <div class="bg-white p-8 border-b rounded-t-lg">
+                <div class="flex items-center space-x-6">
+                    <!-- Profile Picture -->
+                    <div class="w-32 h-32 bg-purple-100 rounded-full flex items-center justify-center border-2 border-purple-200">
+                        <i class="fas fa-user text-purple-600 text-4xl"></i>
+                    </div>
+                    
+                    <!-- User Info -->
+                    <div>
+                        <h2 id="profileUserName" class="text-4xl font-bold text-gray-800">Dave Richards</h2>
+                        <div class="flex items-center space-x-3 mt-2">
+                            <span id="profileUserEmail" class="text-gray-600 text-lg">dave@mail.com</span>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-copy text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="mt-2">
+                            <span id="profileUserContact" class="text-gray-600 text-lg">+91 8332883854</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="bg-gray-50 px-6 py-2">
+                <div class="flex space-x-1">
+                    <button class="tab-btn active px-4 py-2 rounded-md bg-purple-100 text-purple-700 font-medium" data-tab="basic">
+                        Basic Info
+                    </button>
+                    <button class="tab-btn px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium relative" data-tab="education">
+                        Education & skills
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
+                    </button>
+                    <button class="tab-btn px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-medium" data-tab="experience">
+                        Experience
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="p-6 bg-white rounded-b-lg">
+                <!-- Basic Info Tab -->
+                <div id="basic-tab" class="tab-content">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800">Basic Details</h3>
+                            <button class="text-purple-600 hover:text-purple-700">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- First Name -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First name</label>
+                                <input type="text" id="firstName" placeholder="e.g. John" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+
+                            <!-- Last Name -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last name</label>
+                                <input type="text" id="lastName" placeholder="e.g. Doe" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+
+                            <!-- Email ID -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email ID</label>
+                                <input type="email" id="emailId" placeholder="e.g. mrnobody@mail.com" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+
+                            <!-- Year of Birth -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Year of birth</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option>YYYY</option>
+                                    <option>1990</option>
+                                    <option>1991</option>
+                                    <option>1992</option>
+                                    <option>1993</option>
+                                    <option>1994</option>
+                                    <option>1995</option>
+                                </select>
+                            </div>
+
+                            <!-- Gender -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option>Select an option</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone number</label>
+                                <div class="flex">
+                                    <div class="flex items-center px-3 py-2 border border-gray-300 border-r-0 rounded-l-md bg-gray-50">
+                                        <span class="text-sm">🇮🇳</span>
+                                        <select class="ml-2 bg-transparent border-none focus:outline-none">
+                                            <option>+91</option>
+                                            <option>+1</option>
+                                            <option>+44</option>
+                                        </select>
+                                    </div>
+                                    <input type="tel" id="phoneNumber" value="8332883854" 
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+                            </div>
+
+                            <!-- Alternate Phone -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Alternate Phone no</label>
+                                <input type="tel" placeholder="e.g. 9876543210" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+
+                            <!-- Address -->
+                            <div class="md:col-span-2 lg:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                                <textarea rows="3" placeholder="Enter here" 
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                            </div>
+
+                            <!-- Pincode -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
+                                <input type="text" placeholder="Enter here" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+
+                            <!-- Domicile State -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Domicile state</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option>Select an option</option>
+                                    <option>Maharashtra</option>
+                                    <option>Karnataka</option>
+                                    <option>Tamil Nadu</option>
+                                    <option>Gujarat</option>
+                                    <option>Delhi</option>
+                                </select>
+                            </div>
+
+                            <!-- Domicile Country -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Domicile country</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option>Select an option</option>
+                                    <option>India</option>
+                                    <option>United States</option>
+                                    <option>United Kingdom</option>
+                                    <option>Canada</option>
+                                    <option>Australia</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education & Skills Tab -->
+                <div id="education-tab" class="tab-content hidden">
+                    <!-- Education Details Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800">Education Details</h3>
+                            <button class="text-purple-600 hover:text-purple-700">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+
+                        <!-- Education Form Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Left Column -->
+                            <div class="space-y-6">
+                                <!-- School / College -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">School / College</label>
+                                    <input type="text" placeholder="e.g. Lincoln College" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+
+                                <!-- Course -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Course</label>
+                                    <input type="text" placeholder="e.g. Computer science engineering" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="space-y-6">
+                                <!-- Highest degree or equivalent -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Highest degree or equivalent</label>
+                                    <input type="text" placeholder="e.g. Bachelors in Technology" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+
+                                <!-- Year of completion and Grade side by side -->
+                                <div class="grid grid-cols-2 gap-4">
+                                <!-- Year of completion -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Year of completion</label>
+                                    <div class="relative">
+                                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none">
+                                            <option value="">Select year</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2021">2021</option>
+                                            <option value="2020">2020</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2018">2018</option>
+                                            <option value="2017">2017</option>
+                                            <option value="2016">2016</option>
+                                            <option value="2015">2015</option>
+                                            <option value="2014">2014</option>
+                                            <option value="2013">2013</option>
+                                            <option value="2012">2012</option>
+                                            <option value="2011">2011</option>
+                                            <option value="2010">2010</option>
+                                            <option value="2009">2009</option>
+                                            <option value="2008">2008</option>
+                                            <option value="2007">2007</option>
+                                            <option value="2006">2006</option>
+                                            <option value="2005">2005</option>
+                                            <option value="2004">2004</option>
+                                            <option value="2003">2003</option>
+                                            <option value="2002">2002</option>
+                                            <option value="2001">2001</option>
+                                            <option value="2000">2000</option>
+                                            <option value="1999">1999</option>
+                                            <option value="1998">1998</option>
+                                            <option value="1997">1997</option>
+                                            <option value="1996">1996</option>
+                                            <option value="1995">1995</option>
+                                            <option value="1994">1994</option>
+                                            <option value="1993">1993</option>
+                                            <option value="1992">1992</option>
+                                            <option value="1991">1991</option>
+                                            <option value="1990">1990</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                            <i class="fas fa-chevron-down text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <!-- Grade -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Grade</label>
+                                        <input type="text" placeholder="Enter here" 
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills & Projects Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800">Skills & Projects</h3>
+                            <button class="text-purple-600 hover:text-purple-700">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+
+                        <!-- Skills & Projects Form Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Skills -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Skills</label>
+                                <textarea placeholder="Enter here" rows="6"
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"></textarea>
+                            </div>
+
+                            <!-- Projects -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Projects</label>
+                                <textarea placeholder="Enter here" rows="6"
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience Tab -->
+                <div id="experience-tab" class="tab-content hidden">
+                    <!-- Work Experience Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800">Work Experience</h3>
+                            <button class="text-purple-600 hover:text-purple-700">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+
+                        <!-- Work Experience Form Fields -->
+                        <div class="space-y-6">
+                            <!-- First Experience Set -->
+                            <div class="space-y-4">
+                                <!-- Domain - Full Width -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Domain</label>
+                                    <input type="text" placeholder="e.g. Technology" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+
+                                <!-- Sub-domain and Experience - Side by Side -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Sub-domain -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Sub-domain</label>
+                                        <input type="text" placeholder="e.g. MERN Stack" 
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+
+                                    <!-- Experience -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Experience</label>
+                                        <div class="relative">
+                                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none">
+                                                <option>Select an option</option>
+                                                <option>0-1 years</option>
+                                                <option>1-2 years</option>
+                                                <option>2-3 years</option>
+                                                <option>3-5 years</option>
+                                                <option>5+ years</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                                <i class="fas fa-chevron-down text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Second Experience Set -->
+                            <div class="space-y-4">
+                                <!-- Domain - Full Width -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Domain</label>
+                                    <input type="text" placeholder="e.g. Technology" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+
+                                <!-- Sub-domain and Experience - Side by Side -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Sub-domain -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Sub-domain</label>
+                                        <input type="text" placeholder="e.g. MERN Stack" 
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    </div>
+
+                                    <!-- Experience -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Experience</label>
+                                        <div class="relative">
+                                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none">
+                                                <option>Select an option</option>
+                                                <option>0-1 years</option>
+                                                <option>1-2 years</option>
+                                                <option>2-3 years</option>
+                                                <option>3-5 years</option>
+                                                <option>5+ years</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                                <i class="fas fa-chevron-down text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LinkedIn and Resume Section - Side by Side -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- LinkedIn Section -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-semibold text-gray-800">LinkedIn</h3>
+                                <button class="text-purple-600 hover:text-purple-700">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+
+                            <!-- LinkedIn Form Field -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Profile URL</label>
+                                <input type="url" value="linkedin.com/in/mrbean" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                        </div>
+
+                        <!-- Resume Section -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-semibold text-gray-800">Resume</h3>
+                                <button class="text-purple-600 hover:text-purple-700" onclick="document.getElementById('resumeFileInput').click()">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+
+                            <!-- Resume File Upload/Display -->
+                            <div id="resumeUploadArea" class="space-y-4">
+                                <!-- File Input (Hidden) -->
+                                <input type="file" id="resumeFileInput" accept=".pdf,.doc,.docx" class="hidden" onchange="handleResumeUpload(event)">
+                                
+                                <!-- Upload Button (shown when no file) -->
+                                <div id="uploadButton" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-400 transition-colors cursor-pointer" onclick="document.getElementById('resumeFileInput').click()">
+                                    <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-2"></i>
+                                    <p class="text-gray-600">Click to upload resume</p>
+                                    <p class="text-sm text-gray-500">PDF, DOC, DOCX files only</p>
+                                </div>
+
+                                <!-- File Display (shown when file is uploaded) -->
+                                <div id="fileDisplay" class="hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-3">
+                                            <i class="fas fa-file-pdf text-red-500 text-lg"></i>
+                                            <span id="fileName" class="text-gray-700 font-medium"></span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button id="viewResumeBtn" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors duration-200">
+                                                View
+                                            </button>
+                                            <button onclick="removeResume()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-200">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="mt-4">
+                <button id="backToUsersBtn" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors duration-200 flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Back to Users
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-white h-full w-1/2 ml-auto shadow-lg p-6 transform transition-transform duration-300 ease-in-out relative" style="transform: translateX(100%);">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Add User</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700 text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form -->
+            <form id="addUserForm" class="space-y-4 pb-20">
+                <!-- Name Field -->
+                <div>
+                    <label for="userName" class="block text-sm font-medium text-gray-700 mb-2">Name of the user</label>
+                    <input type="text" id="userName" name="userName" placeholder="Type here" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                </div>
+
+                <!-- Email and Contact Fields Side by Side -->
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Email Field -->
+                    <div>
+                        <label for="userEmail" class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                        <input type="email" id="userEmail" name="userEmail" placeholder="Type here" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+
+                    <!-- Contact Field -->
+                    <div>
+                        <label for="userContact" class="block text-sm font-medium text-gray-700 mb-2">Contact</label>
+                        <input type="tel" id="userContact" name="userContact" placeholder="Type here" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                </div>
+            </form>
+
+            <!-- Modal Buttons - Fixed at bottom right -->
+            <div class="absolute bottom-0 right-0 left-0 p-6">
+                <!-- Line above buttons -->
+                <div class="border-t border-gray-200 mb-4"></div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancelBtn" class="px-4 py-2 text-purple-600 border border-purple-600 rounded-md hover:bg-purple-50 transition-colors duration-200">
+                        Cancel
+                    </button>
+                    <button type="submit" form="addUserForm" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors duration-200">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Modal functionality
+        const addUserBtn = document.getElementById('addUserBtn');
+        const addUserModal = document.getElementById('addUserModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const addUserForm = document.getElementById('addUserForm');
+
+        // Show modal
+        addUserBtn.addEventListener('click', () => {
+            addUserModal.classList.remove('hidden');
+            // Trigger slide-in animation
+            setTimeout(() => {
+                const modalPanel = addUserModal.querySelector('.bg-white');
+                modalPanel.style.transform = 'translateX(0)';
+            }, 10);
+        });
+
+        // Hide modal functions
+        function hideModal() {
+            const modalPanel = addUserModal.querySelector('.bg-white');
+            modalPanel.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                addUserModal.classList.add('hidden');
+                addUserForm.reset();
+            }, 300);
+        }
+
+        // Close modal events
+        closeModalBtn.addEventListener('click', hideModal);
+        cancelBtn.addEventListener('click', hideModal);
+
+        // Close modal when clicking outside
+        addUserModal.addEventListener('click', (e) => {
+            if (e.target === addUserModal) {
+                hideModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !addUserModal.classList.contains('hidden')) {
+                hideModal();
+            }
+        });
+
+        // Form submission
+        addUserForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(addUserForm);
+            const userName = formData.get('userName');
+            const userEmail = formData.get('userEmail');
+            const userContact = formData.get('userContact');
+
+            // Basic validation
+            if (!userName || !userEmail || !userContact) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Add new user to the table
+            addUserToTable(userName, userEmail, userContact);
+            
+            // Close modal
+            hideModal();
+        });
+
+        // Function to add user to table
+        function addUserToTable(name, email, contact) {
+            const tbody = document.querySelector('tbody');
+            const currentRowCount = tbody.children.length;
+            const newRowNumber = currentRowCount + 1;
+
+            // Create new table row
+            const newRow = document.createElement('tr');
+            newRow.className = 'border-b border-gray-200';
+            newRow.innerHTML = `
+                <td class="px-4 py-3 text-sm text-gray-900">${newRowNumber}</td>
+                <td class="px-4 py-3 text-sm text-gray-900">${name}</td>
+                <td class="px-4 py-3 text-sm text-gray-900">${email}</td>
+                <td class="px-4 py-3 text-sm text-gray-900">
+                    <div class="flex space-x-3">
+                        <button class="text-gray-500 hover:text-gray-700 view-user" data-name="${name}" data-email="${email}" data-contact="${contact}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="text-gray-500 hover:text-gray-700 delete-user">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            // Add the new row to the table
+            tbody.appendChild(newRow);
+
+            // Add event listeners for the new row buttons
+            addRowEventListeners(newRow);
+
+            // Save data to localStorage after adding user
+            saveDataToStorage();
+
+            // User added successfully (no popup)
+        }
+
+        // Function to add event listeners to table row buttons
+        function addRowEventListeners(row) {
+            // View button
+            const viewBtn = row.querySelector('.view-user');
+            viewBtn.addEventListener('click', () => {
+                const name = viewBtn.dataset.name;
+                const email = viewBtn.dataset.email;
+                const contact = viewBtn.dataset.contact;
+                showUserProfile(name, email, contact);
+            });
+
+            // Delete button
+            const deleteBtn = row.querySelector('.delete-user');
+            deleteBtn.addEventListener('click', () => {
+                row.remove();
+                // Update row numbers
+                updateRowNumbers();
+                // Save data to localStorage after deleting user
+                saveDataToStorage();
+            });
+        }
+
+        // Function to update row numbers after deletion
+        function updateRowNumbers() {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach((row, index) => {
+                const srNoCell = row.querySelector('td:first-child');
+                srNoCell.textContent = index + 1;
+            });
+        }
+
+        // User Profile Page functionality
+        const usersSection = document.getElementById('usersSection');
+        const userProfileSection = document.getElementById('userProfileSection');
+        const backToUsersBtn = document.getElementById('backToUsersBtn');
+
+        // Function to show user profile
+        function showUserProfile(name, email, contact) {
+            // Update profile header
+            document.getElementById('profileUserName').textContent = name;
+            document.getElementById('profileUserEmail').textContent = email;
+            document.getElementById('profileUserContact').textContent = contact || '+91 8332883854';
+            
+            // Hide users section and show profile section
+            usersSection.classList.add('hidden');
+            userProfileSection.classList.remove('hidden');
+        }
+
+        // Function to hide profile and show users
+        function hideUserProfile() {
+            userProfileSection.classList.add('hidden');
+            usersSection.classList.remove('hidden');
+        }
+
+        // Back to users button
+        backToUsersBtn.addEventListener('click', hideUserProfile);
+
+        // Tab functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('tab-btn')) {
+                const tabName = e.target.dataset.tab;
+                
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-purple-100', 'text-purple-700');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                
+                // Add active class to clicked tab
+                e.target.classList.add('active', 'bg-purple-100', 'text-purple-700');
+                e.target.classList.remove('bg-gray-200', 'text-gray-700');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show selected tab content
+                document.getElementById(tabName + '-tab').classList.remove('hidden');
+            }
+        });
+
+        // Add event listeners to existing table rows and load saved data
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved data from localStorage
+            loadDataFromStorage();
+            
+            // If no saved data, add event listeners to existing rows
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                const existingRows = document.querySelectorAll('tbody tr');
+                existingRows.forEach(row => {
+                    addRowEventListeners(row);
+                });
+            }
+        });
+
+        // Add event listeners to existing delete buttons using event delegation
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.delete-user')) {
+                const row = e.target.closest('tr');
+                row.remove();
+                updateRowNumbers();
+                // Save data to localStorage after deleting user
+                saveDataToStorage();
+            }
+        });
+
+        // Data persistence functionality
+        const STORAGE_KEY = 'userManagementData';
+        
+        // Function to save data to localStorage
+        function saveDataToStorage() {
+            const users = [];
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach((row, index) => {
+                const cells = row.querySelectorAll('td');
+                const user = {
+                    id: Date.now() + index, // Unique ID for each user
+                    name: cells[1].textContent,
+                    email: cells[2].textContent,
+                    contact: row.querySelector('.view-user').dataset.contact || '+91 8332883854'
+                };
+                users.push(user);
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+        }
+
+        // Function to load data from localStorage
+        function loadDataFromStorage() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                const users = JSON.parse(savedData);
+                const tbody = document.querySelector('tbody');
+                
+                // Clear existing rows
+                tbody.innerHTML = '';
+                
+                // Add saved users to table
+                users.forEach((user, index) => {
+                    const newRow = document.createElement('tr');
+                    newRow.className = 'border-b border-gray-200';
+                    newRow.innerHTML = `
+                        <td class="px-4 py-3 text-sm text-gray-900">${index + 1}</td>
+                        <td class="px-4 py-3 text-sm text-gray-900">${user.name}</td>
+                        <td class="px-4 py-3 text-sm text-gray-900">${user.email}</td>
+                        <td class="px-4 py-3 text-sm text-gray-900">
+                            <div class="flex space-x-3">
+                                <button class="text-gray-500 hover:text-gray-700 view-user" data-name="${user.name}" data-email="${user.email}" data-contact="${user.contact}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700 delete-user">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(newRow);
+                });
+                
+                // Add event listeners to all rows
+                addEventListenersToAllRows();
+            }
+        }
+
+        // Function to add event listeners to all table rows
+        function addEventListenersToAllRows() {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                addRowEventListeners(row);
+            });
+        }
+
+        // Logo click functionality - return to home page
+        function goToHomePage() {
+            // Hide profile section and show users section
+            hideUserProfile();
+        }
+
+        // Resume upload functionality
+        let uploadedResumeFile = null;
+
+        function handleResumeUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Validate file type
+                const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Please upload a PDF, DOC, or DOCX file only.');
+                    return;
+                }
+
+                // Validate file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size should be less than 10MB.');
+                    return;
+                }
+
+                uploadedResumeFile = file;
+                
+                // Update UI to show file
+                document.getElementById('uploadButton').classList.add('hidden');
+                document.getElementById('fileDisplay').classList.remove('hidden');
+                document.getElementById('fileName').textContent = file.name;
+                
+                // Update file icon based on type
+                const fileIcon = document.querySelector('#fileDisplay i');
+                if (file.type === 'application/pdf') {
+                    fileIcon.className = 'fas fa-file-pdf text-red-500 text-lg';
+                } else if (file.type.includes('word')) {
+                    fileIcon.className = 'fas fa-file-word text-blue-500 text-lg';
+                } else {
+                    fileIcon.className = 'fas fa-file text-gray-500 text-lg';
+                }
+            }
+        }
+
+        function removeResume() {
+            uploadedResumeFile = null;
+            document.getElementById('resumeFileInput').value = '';
+            document.getElementById('uploadButton').classList.remove('hidden');
+            document.getElementById('fileDisplay').classList.add('hidden');
+        }
+
+        // View resume functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const viewResumeBtn = document.getElementById('viewResumeBtn');
+            if (viewResumeBtn) {
+                viewResumeBtn.addEventListener('click', function() {
+                    if (uploadedResumeFile) {
+                        // Create object URL for the file
+                        const fileURL = URL.createObjectURL(uploadedResumeFile);
+                        
+                        // Open file in new tab/window
+                        const newWindow = window.open(fileURL, '_blank');
+                        
+                        // Clean up the object URL after a delay
+                        setTimeout(() => {
+                            URL.revokeObjectURL(fileURL);
+                        }, 1000);
+                    } else {
+                        alert('No resume file uploaded.');
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
