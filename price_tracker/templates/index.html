@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Price Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --text: #152238;
+            --muted: #6b7280;
+            --primary: #2563eb;
+            --danger: #dc2626;
+            --success: #059669;
+            --border: #e5e7eb;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Inter, Segoe UI, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .container {
+            max-width: 1180px;
+            margin: 24px auto;
+            padding: 0 16px 30px;
+        }
+        h1 { margin: 0 0 8px; }
+        .subtitle { margin: 0 0 18px; color: var(--muted); }
+        .grid { display: grid; gap: 14px; }
+        .stats { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 18px; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+        }
+        .stat-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 4px; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; }
+        .add-form { display: grid; gap: 10px; grid-template-columns: 2fr 1.4fr 1fr 1fr auto; margin-bottom: 22px; }
+        input, select, button {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            color: white;
+            background: var(--primary);
+        }
+        button.secondary { background: #334155; }
+        button.danger { background: var(--danger); }
+        .products { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .product-top { display: flex; justify-content: space-between; gap: 10px; }
+        .product-name { font-size: 1rem; font-weight: 700; margin: 0; }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            background: #dbeafe;
+            color: #1e3a8a;
+            white-space: nowrap;
+            height: fit-content;
+        }
+        .price { font-size: 1.2rem; font-weight: 700; margin: 8px 0 4px; color: var(--success); }
+        .meta { margin: 4px 0; color: var(--muted); font-size: 0.86rem; }
+        .actions { display: flex; gap: 8px; margin: 10px 0; }
+        .actions button { flex: 1; }
+        .prediction {
+            margin-top: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            background: #f8fafc;
+            border: 1px dashed var(--border);
+        }
+        #toast {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: #111827;
+            color: white;
+            padding: 12px 14px;
+            border-radius: 8px;
+            display: none;
+            z-index: 10;
+            max-width: 360px;
+        }
+        @media (max-width: 900px) {
+            .add-form { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Price Tracker</h1>
+        <p class="subtitle">Track Amazon and Flipkart prices, predict drops, and catch deals early.</p>
+
+        <section class="grid stats">
+            <article class="card">
+                <div class="stat-label">Total Products</div>
+                <div class="stat-value" id="stat-products">0</div>
+            </article>
+            <article class="card">
+                <div class="stat-label">Price Records</div>
+                <div class="stat-value" id="stat-records">0</div>
+            </article>
+            <article class="card">
+                <div class="stat-label">Avg Variation</div>
+                <div class="stat-value" id="stat-variation">0%</div>
+            </article>
+        </section>
+
+        <section class="card">
+            <h3 style="margin-top: 0">Add Product</h3>
+            <form class="add-form" id="addForm">
+                <input id="url" required placeholder="https://www.amazon.in/... or https://www.flipkart.com/..." />
+                <input id="alertEmail" type="email" required placeholder="Alert email (required)" />
+                <input id="targetPrice" type="number" step="0.01" min="0" placeholder="Target price (optional)" />
+                <select id="category">
+                    <option value="General">General</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Home">Home</option>
+                    <option value="Grocery">Grocery</option>
+                    <option value="Books">Books</option>
+                </select>
+                <button type="submit">Add Product</button>
+            </form>
+        </section>
+
+        <section class="products" id="products"></section>
+    </div>
+    <div id="toast"></div>
+
+    <script>
+        const productsContainer = document.getElementById("products");
+        const statProducts = document.getElementById("stat-products");
+        const statRecords = document.getElementById("stat-records");
+        const statVariation = document.getElementById("stat-variation");
+        const chartStore = {};
+
+        function showToast(message, timeout = 2500) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.display = "block";
+            setTimeout(() => { toast.style.display = "none"; }, timeout);
+        }
+
+        function formatCurrency(value) {
+            if (value === null || value === undefined) return "N/A";
+            return `Rs ${Number(value).toFixed(2)}`;
+        }
+
+        async function api(url, options = {}) {
+            const response = await fetch(url, {
+                headers: { "Content-Type": "application/json" },
+                ...options
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "Request failed");
+            return data;
+        }
+
+        async function loadStats() {
+            try {
+                const data = await api("/api/stats");
+                statProducts.textContent = data.total_products;
+                statRecords.textContent = data.price_records;
+                statVariation.textContent = `${data.average_variation_percent}%`;
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        function renderProductCard(product) {
+            const card = document.createElement("article");
+            card.className = "card";
+            card.innerHTML = `
+                <div class="product-top">
+                    <h4 class="product-name">${product.product_name}</h4>
+                    <span class="badge">${product.category || "General"}</span>
+                </div>
+                <div class="price">${formatCurrency(product.latest_price)}</div>
+                <p class="meta">Target: ${product.target_price ? formatCurrency(product.target_price) : "Not set"}</p>
+                <p class="meta">Alerts to: ${product.alert_email || "Not set"}</p>
+                <p class="meta"><a href="${product.url}" target="_blank" rel="noopener noreferrer">Open product page</a></p>
+                <div class="actions">
+                    <button class="secondary" data-action="refresh">Refresh</button>
+                    <button class="secondary" data-action="predict">Predict</button>
+                    <button class="danger" data-action="delete">Delete</button>
+                </div>
+                <canvas id="chart-${product.id}" height="130"></canvas>
+                <div class="prediction" id="prediction-${product.id}">Prediction: Not run yet.</div>
+            `;
+
+            card.querySelector('[data-action="refresh"]').addEventListener("click", () => refreshProduct(product.id));
+            card.querySelector('[data-action="predict"]').addEventListener("click", () => predictProduct(product.id));
+            card.querySelector('[data-action="delete"]').addEventListener("click", () => deleteProduct(product.id));
+            return card;
+        }
+
+        async function loadProducts() {
+            try {
+                const data = await api("/api/products");
+                productsContainer.innerHTML = "";
+
+                if (!data.products.length) {
+                    productsContainer.innerHTML = '<article class="card">No tracked products yet. Add one to begin.</article>';
+                    return;
+                }
+
+                data.products.forEach((product) => {
+                    productsContainer.appendChild(renderProductCard(product));
+                    loadHistoryChart(product.id);
+                });
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        async function loadHistoryChart(productId) {
+            try {
+                const data = await api(`/api/products/${productId}/history?days=30`);
+                const labels = data.history.map((h) => new Date(h.scraped_at).toLocaleDateString());
+                const prices = data.history.map((h) => Number(h.price));
+                const canvas = document.getElementById(`chart-${productId}`);
+                if (!canvas) return;
+
+                if (chartStore[productId]) chartStore[productId].destroy();
+
+                chartStore[productId] = new Chart(canvas, {
+                    type: "line",
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: "Price",
+                            data: prices,
+                            borderColor: "#2563eb",
+                            backgroundColor: "rgba(37, 99, 235, 0.15)",
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.25
+                        }]
+                    },
+                    options: {
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: false } }
+                    }
+                });
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        async function refreshProduct(productId) {
+            try {
+                const data = await api(`/api/products/${productId}/refresh`, { method: "POST" });
+                showToast(data.alerts?.length ? data.alerts.join(" | ") : "Price refreshed.");
+                await Promise.all([loadProducts(), loadStats()]);
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        async function predictProduct(productId) {
+            const box = document.getElementById(`prediction-${productId}`);
+            try {
+                const data = await api(`/api/products/${productId}/predict`);
+                box.textContent = `Prediction: 7-day price ${formatCurrency(data.predicted_price_7d)} (${data.predicted_drop_percent}% change). ${data.likely_to_drop ? "Likely to drop." : "No strong drop signal."}`;
+            } catch (error) {
+                box.textContent = `Prediction: ${error.message}`;
+            }
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm("Remove this product from tracking?")) return;
+            try {
+                await api(`/api/products/${productId}/delete`, { method: "DELETE" });
+                showToast("Product deleted.");
+                await Promise.all([loadProducts(), loadStats()]);
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        document.getElementById("addForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const url = document.getElementById("url").value.trim();
+            const alertEmail = document.getElementById("alertEmail").value.trim();
+            const category = document.getElementById("category").value;
+            const targetPrice = document.getElementById("targetPrice").value;
+
+            try {
+                await api("/api/products/add", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        url,
+                        alert_email: alertEmail,
+                        category,
+                        target_price: targetPrice ? Number(targetPrice) : null
+                    })
+                });
+                showToast("Product added successfully.");
+                event.target.reset();
+                await Promise.all([loadProducts(), loadStats()]);
+            } catch (error) {
+                showToast(error.message);
+            }
+        });
+
+        (async function bootstrap() {
+            await Promise.all([loadProducts(), loadStats()]);
+        })();
+    </script>
+</body>
+</html>
