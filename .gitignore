@@ -1,0 +1,6 @@
+.env
+price_tracker.log
+price_tracker.db
+__pycache__/
+*.pyc
+.venv/
