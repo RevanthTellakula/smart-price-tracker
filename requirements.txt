@@ -1,4 +1,5 @@
 Flask
+gunicorn
 beautifulsoup4
 requests
 curl_cffi
